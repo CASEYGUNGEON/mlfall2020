@@ -20,6 +20,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="knn.py" />
     <Compile Include="regression.py" />
   </ItemGroup>
   <ItemGroup>
