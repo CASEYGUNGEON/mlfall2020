@@ -19,9 +19,15 @@ data = pd.read_csv('.\\winequality-white.csv', sep = ';')
 arr = pd.DataFrame(data).to_numpy()
 
 # normalize
-for i in range(0,13): #get minimum and range for each factor & result
+minval = np.zeros(12)
+maxdif = np.zeros(12)
+for i in range(0,12): #get minimum and range for each factor & result
     minval[i] = arr[:,i].min()
-    maxdif[i] = arr[:,i].max - minval[i]
-    for x in arr.len(): # perform normalization on each factor in each datum
+    maxdif[i] = arr[:,i].max() - minval[i]
+    for x in range(0,len(arr)): # perform normalization on each factor in each datum
         arr[x,i] = (arr[x,i] - minval[i]) / maxdif[i]
 
+X = np.zeros((len(arr),11))
+Y = np.zeros(len(arr))
+X = arr[:,0:10]
+Y = arr[:,11]
