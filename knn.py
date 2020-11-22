@@ -34,7 +34,7 @@ def findMode(a):
 # takes a data point, a set of other data points, Y values
     # of the other data, and a K for
     # Nearest Neighbor calculation.
-def getNNY(target, others, othersY, k):
+def getNNY(target, others, othersY, kn):
     # save Y values, and calculate distance from target
     sorted = np.zeros((len(others),2))
     for i in range(len(others)):
@@ -43,8 +43,8 @@ def getNNY(target, others, othersY, k):
     # sort data by distance from target
     sorted.sort(key=sortBy2ndEle)
     # collect Y values of exactly K nearest neighbors
-    neighborsY = np.zeros(k)
-    for j in range(k):
+    neighborsY = np.zeros(kn)
+    for j in range(kn):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
 
@@ -70,8 +70,11 @@ Y = np.zeros(len(arr))
 X = arr[:,0:10]
 Y = arr[:,11]
 
+
+##########################################
 # pick random sample for training
 numTrainSamples = 2000
+##########################################
 trainPicks = rdm.sample(range(len(arr)),numTrainSamples)
 
 # initialize arrays for training and test sets
@@ -85,8 +88,10 @@ curTrainIndex = 0
 curTestIndex = 0
 for i in range(0,len(arr)):
     if i in trainPicks:
+        j = 0
         for val in X[i]:
-            np.append(XTrain[curTrainIndex],val)
+            XTrain[curTrainIndex][j] = val
+            j += 1
         YTrain[curTrainIndex] = Y[i]
         curTrainIndex = curTrainIndex + 1
     else:
@@ -94,3 +99,13 @@ for i in range(0,len(arr)):
             np.append(XTest[curTestIndex],val)
         YTest[curTestIndex] = Y[i]
         curTestIndex = curTestIndex + 1
+
+
+# train
+cols = data.columns.tolist()
+fig, ax = plt.subplots(5,2)
+for i in range(len(XTrain[0])):
+    ax[i%5,math.floor(i/5)].scatter(XTrain[:,i],YTrain)
+    ax[i%5,math.floor(i/5)].set_title(cols[i])
+plt.ylabel('wine quality')
+plt.show()
