@@ -121,7 +121,12 @@ for i in range(len(XTrain)):
     print("calculating XTrain[" + str(i) + "]")
     YTrainPred[i] = getNNY(XTrain[i],XTrain,YTrain,K)
 correct = 0
+avgdif = 0.0
 for i in range(len(YTrainPred)):
     if YTrainPred[i] == YTrain[i]:
         correct += 1
+    print("dif = " + str(abs(YTrain[i] - YTrainPred[i])))
+    avgdif += abs(YTrain[i] - YTrainPred[i])
+avgdif /= len(YTrain)
 print("correct values: " + str(correct) + " out of " + str(len(YTrain)))
+print("average error: " + str(avgdif))
