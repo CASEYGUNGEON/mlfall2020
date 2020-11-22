@@ -6,12 +6,18 @@ import pandas as pd
 import math
 import random as rdm
 
+# number of neighbors
+K = 5
+# training sample size
+numTrainSamples = 2000
+
+
 # calculate distance between 2 points
 def distance(x1, x2):
     dist = 0.0
     for i in range(len(x1)-1):
         dist += (x1[i] - x2[i])**2
-    dist = sqrt(dist)
+    dist = math.sqrt(dist)
     return dist
 
 # key for sorting 2D arrays by second element (used in custom KNN)
@@ -41,10 +47,10 @@ def getNNY(target, others, othersY, kn):
         sorted[i][0] = othersY[i]
         sorted[i][1] = distance(target,others[i])
     # sort data by distance from target
-    sorted.sort(key=sortBy2ndEle)
+    sorted = sorted[sorted[:,1].argsort()]
     # collect Y values of exactly K nearest neighbors
     neighborsY = np.zeros(kn)
-    for j in range(kn):
+    for j in range(1,kn):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
 
@@ -71,10 +77,7 @@ X = arr[:,0:10]
 Y = arr[:,11]
 
 
-##########################################
 # pick random sample for training
-numTrainSamples = 2000
-##########################################
 trainPicks = rdm.sample(range(len(arr)),numTrainSamples)
 
 # initialize arrays for training and test sets
@@ -100,8 +103,8 @@ for i in range(0,len(arr)):
         YTest[curTestIndex] = Y[i]
         curTestIndex = curTestIndex + 1
 
-
-# train
+'''
+# display training data
 cols = data.columns.tolist()
 fig, ax = plt.subplots(5,2)
 for i in range(len(XTrain[0])):
@@ -109,3 +112,16 @@ for i in range(len(XTrain[0])):
     ax[i%5,math.floor(i/5)].set_title(cols[i])
 plt.ylabel('wine quality')
 plt.show()
+'''
+
+# Train
+
+YTrainPred = np.zeros(len(YTrain))
+for i in range(len(XTrain)):
+    print("calculating XTrain[" + str(i) + "]")
+    YTrainPred[i] = getNNY(XTrain[i],XTrain,YTrain,K)
+correct = 0
+for i in range(len(YTrainPred)):
+    if YTrainPred[i] == YTrain[i]:
+        correct += 1
+print("correct values: " + str(correct) + " out of " + str(len(YTrain)))
