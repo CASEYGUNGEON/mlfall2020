@@ -22,15 +22,11 @@ def sortBy2ndEle(a):
 # for KNN, this should be passed a list of Y values
     # in order of ascending distance from target
 def findMode(a):
-    # convert list to set for unique values
-    uniques = set(a)
-    # get count of all values
-    cts = np.zeros(len(uniques))
-    for i in range(len(uniques)):
-        cts[i] = a.count(uniques[i])
+    # get unique values and their counts
+    (uniques, counts) = np.unique(a, return_counts=True)
     # check for single mode
-    if len(set(cts)) == len(cts):
-        return max(a,key=a.count)
+    if len(np.argwhere(counts==np.max(counts))) < 2:
+        return uniques.item(np.where(counts==np.max(counts))[0][0])
     # if tied, try again with farthest data point removed
     else:
         return findMode(a[:-1])
@@ -52,8 +48,8 @@ def getNNY(target, others, othersY, k):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
 
-# read data from csv
 
+# read data from csv
 data = pd.read_csv('.\\winequality-white.csv', sep = ';')
 arr = pd.DataFrame(data).to_numpy()
 # normalize
@@ -98,4 +94,3 @@ for i in range(0,len(arr)):
             np.append(XTest[curTestIndex],val)
         YTest[curTestIndex] = Y[i]
         curTestIndex = curTestIndex + 1
-
