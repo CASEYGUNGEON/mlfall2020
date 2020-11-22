@@ -18,13 +18,13 @@ def distance(x1, x2):
 def sortBy2ndEle(a):
     return a[1]
 
-# find mode of list.
-# for KNN, this should be passed a list of Y values
+# finds mode of passed ndarray
+# for KNN, this should be passed an ndarray of Y values
     # in order of ascending distance from target
 def findMode(a):
     # get unique values and their counts
     (uniques, counts) = np.unique(a, return_counts=True)
-    # check for single mode
+    # check for only one mode, return it
     if len(np.argwhere(counts==np.max(counts))) < 2:
         return uniques.item(np.where(counts==np.max(counts))[0][0])
     # if tied, try again with farthest data point removed
