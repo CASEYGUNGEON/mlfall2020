@@ -14,6 +14,44 @@ def distance(x1, x2):
     dist = sqrt(dist)
     return dist
 
+# key for sorting 2D arrays by second element (used in custom KNN)
+def sortBy2ndEle(a):
+    return a[1]
+
+# find mode of list.
+# for KNN, this should be passed a list of Y values
+    # in order of ascending distance from target
+def findMode(a):
+    # convert list to set for unique values
+    uniques = set(a)
+    # get count of all values
+    cts = np.zeros(len(uniques))
+    for i in range(len(uniques)):
+        cts[i] = a.count(uniques[i])
+    # check for single mode
+    if len(set(cts)) == len(cts):
+        return max(a,key=a.count)
+    # if tied, try again with farthest data point removed
+    else:
+        return findMode(a[:-1])
+
+# takes a data point, a set of other data points, Y values
+    # of the other data, and a K for
+    # Nearest Neighbor calculation.
+def getNNY(target, others, othersY, k):
+    # save Y values, and calculate distance from target
+    sorted = np.zeros((len(others),2))
+    for i in range(len(others)):
+        sorted[i][0] = othersY[i]
+        sorted[i][1] = distance(target,others[i])
+    # sort data by distance from target
+    sorted.sort(key=sortBy2ndEle)
+    # collect Y values of exactly K nearest neighbors
+    neighborsY = np.zeros(k)
+    for j in range(k):
+        neighborsY[j] = sorted[i][0]
+    return findMode(neighborsY)
+
 # read data from csv
 
 data = pd.read_csv('.\\winequality-white.csv', sep = ';')
@@ -60,3 +98,4 @@ for i in range(0,len(arr)):
             np.append(XTest[curTestIndex],val)
         YTest[curTestIndex] = Y[i]
         curTestIndex = curTestIndex + 1
+
