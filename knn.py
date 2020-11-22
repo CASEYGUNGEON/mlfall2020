@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import math
+import random as rdm
 
 # calculate distance between 2 points
 def distance(x1, x2):
@@ -17,7 +18,6 @@ def distance(x1, x2):
 
 data = pd.read_csv('.\\winequality-white.csv', sep = ';')
 arr = pd.DataFrame(data).to_numpy()
-print(len(arr))
 # normalize
 minVal = np.zeros(12)
 maxDif = np.zeros(12)
@@ -38,7 +38,7 @@ Y = arr[:,11]
 
 # pick random sample for training
 numTrainSamples = 2000
-trainPicks = np.random.randint(0,len(arr),numTrainSamples)
+trainPicks = rdm.sample(range(len(arr)),numTrainSamples)
 
 # initialize arrays for training and test sets
 XTrain = np.zeros((numTrainSamples,10))
@@ -46,24 +46,17 @@ YTrain = np.zeros(numTrainSamples)
 XTest = np.zeros((len(arr) - numTrainSamples,10))
 YTest = np.zeros(len(arr) - numTrainSamples)
 
-print(len(XTest))
-
 # separate training and test samples
 curTrainIndex = 0
 curTestIndex = 0
-for i in range(0,len(arr) - 1):
+for i in range(0,len(arr)):
     if i in trainPicks:
-        print("add to train: " + str(curTestIndex) + " + " + str(i))
-        XTrain[curTrainIndex] = X[i]
+        for val in X[i]:
+            np.append(XTrain[curTrainIndex],val)
         YTrain[curTrainIndex] = Y[i]
-        curTrainIndex += 1
+        curTrainIndex = curTrainIndex + 1
     else:
-        print("add to test: " + str(curTestIndex) + " + " + str(i))
-        XTest[curTestIndex] = X[i]
+        for val in X[i]:
+            np.append(XTest[curTestIndex],val)
         YTest[curTestIndex] = Y[i]
-        curTestIndex += 1
-
-#print(XTrain)
-#print(YTrain)
-#print(XTest)
-#print(YTest)
+        curTestIndex = curTestIndex + 1
