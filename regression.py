@@ -22,9 +22,9 @@ arr = pd.DataFrame(data).to_numpy()
 minval = np.zeros(13) 
 dif = np.zeros(13)    
 for i in range(0,12): # for each category
-    minval[i] = arr[:,i].min() # get min
-    dif[i] = arr[:,i].max() - minval[i] # get difference
-    for j in range(0,4898): # for each value in each category
+    minval[i] = arr[1:,i].min() # get min
+    dif[i] = arr[1:,i].max() - minval[i] # get difference
+    for j in range(1,4898): # for each value in each category
         arr[j,i] = (arr[j,i] - minval[i]) / dif[i] # normalizing data
 
 # print(arr) # for testing
@@ -32,8 +32,8 @@ for i in range(0,12): # for each category
 # Assign values for X and Y
 Xvals = np.ones((4898,12))
 Yvals = np.zeros(4898)
-Xvals[:, 1:12] = arr[:, 0:11] # Xvals[:, 0] is 1, fill in the rest with the X values from the dataset
-Yvals[:] = arr[:, 11] # fill in Y values from dataset
+Xvals[:, 1:12] = arr[1:, 0:11] # Xvals[:, 0] is 1, fill in the rest with the X values from the dataset
+Yvals[:] = arr[1:, 11] # fill in Y values from dataset
 
 #print(Xvals)
 #print(Yvals)
