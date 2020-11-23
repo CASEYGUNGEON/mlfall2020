@@ -53,26 +53,26 @@ def getNNY(target, others, othersY, kn):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
 
-'''
+
 # Train
-def TrainIteration(localK):
-    YTrainPred = np.zeros(len(YTrain))
-    for i in range(len(XTrain)):
-        print("calculating XTrain[" + str(i) + "]")
-        YTrainPred[i] = getNNY(XTrain[i],XTrain,YTrain,localK)
+def Iteration(localK, XSet, YSet):
+    YPred = np.zeros(len(YSet))
+    for i in range(len(XSet)):
+        print("calculating X [" + str(i) + "]")
+        YPred[i] = getNNY(XSet[i],XSet,YSet,localK)
     correct = 0
     avgdif = 0.0
-    for i in range(len(YTrainPred)):
-        if YTrainPred[i] == YTrain[i]:
+    for i in range(len(YPred)):
+        if YPred[i] == YSet[i]:
             correct += 1
-        avgdif += abs(YTrain[i] - YTrainPred[i])
-    avgdif /= len(YTrain)
-    print("correct values: " + str(correct) + " out of " + str(len(YTrain)))
+        avgdif += abs(YSet[i] - YPred[i])
+    avgdif /= len(YSet)
+    print("correct values: " + str(correct) + " out of " + str(len(YSet)))
     print("average error: " + str(avgdif))
     print("K = " + str(localK))
     input("Press Enter to continue...")
     return correct,avgdif
-
+'''
 def Train(localK):
     cor, avg = TrainIteration(localK)
     corList = [cor]
