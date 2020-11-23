@@ -53,7 +53,7 @@ def getNNY(target, others, othersY, kn):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
 
-
+'''
 # Train
 def TrainIteration(localK):
     YTrainPred = np.zeros(len(YTrain))
@@ -75,35 +75,46 @@ def TrainIteration(localK):
 
 def Train(localK):
     cor, avg = TrainIteration(localK)
+    corList = [cor]
+    avgList = [avg]
     localK += KRate
     cor2, avg2 = TrainIteration(localK)
+    corList.append(cor2)
+    avgList.append(avg2)
     while cor2 < cor and avg2 < avg:
         cor = cor2
         avg = avg2
         cor2, avg2 = Train(localK)
-
         if cor2 > cor or avg2 > avg:
+            localK -= KRate
             print("Done training!")
-            return localK
+            return localK, corList, avgList
         else:
+            corList.append(cor2)
+            avgList.append(avg2)
             localK += KRate
     localK -= KRate * 2
     cor = cor2
     avg = avg2
     cor2, avg2 = TrainIteration(localK)
+    corList.append(cor2)
+    avgList.append(avg2)
     while cor2 < cor and avg2 < avg:
         cor = cor2
         avg = avg2
         cor2, avg2 = TrainIteration(localK)
         if cor2 > cor or avg2 > avg:
+            localK += KRate
             print("Done training!")
-            return localK
+            return localK, corList, avgList
         else:
+            corList.append(cor2)
+            avgList.append(avg2)
             localK -= KRate
     localK += KRate
     print("Done training!")
-    return localK
-
+    return localK, corList, avgList
+'''
 
 ######## End of definitions
 
@@ -166,6 +177,12 @@ for i in range(len(XTrain[0])):
 plt.ylabel('wine quality')
 plt.show()
 '''
-
-K = Train(K)
+'''
+K, CL, AL = Train(K)
 print("final K: " + str(K))
+plt.plot(range(len(CL)),CL,'g-',label='number correct')
+plt.plot(range(len(AL)),AL,'r-',label='average error')
+plt.xlabel('iterations')
+plt.legend(loc='best')
+plt.show()
+'''
