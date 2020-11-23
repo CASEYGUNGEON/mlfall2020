@@ -49,12 +49,16 @@ def getNNY(target, others, othersY, kn):
     sorted = sorted[sorted[:,1].argsort()]
     # collect Y values of exactly K nearest neighbors
     neighborsY = np.zeros(kn)
-    for j in range(1,kn):
+    if target in sorted:
+        first = 1
+    else:
+        first = 0
+    for j in range(first,kn):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
 
 
-# Train
+# Run on data with known ground truth value
 def Iteration(localK, XSet, YSet):
     YPred = np.zeros(len(YSet))
     for i in range(len(XSet)):
@@ -72,6 +76,20 @@ def Iteration(localK, XSet, YSet):
     print("K = " + str(localK))
     input("Press Enter to continue...")
     return correct,avgdif
+
+def Predict(localK, KnownSet, YSet, UnknownSet):
+    YPred = np.zeros(len(YSet))
+    for i in range(len(UnknownSet)):
+        print("calculating X [" + str(i) + "]")
+        YPred[i] = getNNY(UnknownSet[i],XSet,YSet,localK)
+    return YPred
+
+def PredictSingle(localK, XSet, YSet, target):
+    if target in XSet:
+        np.delete(XSet,np.where(XSet==target))
+    return getNNY(target,XSet,YSet, localK)
+
+
 '''
 def Train(localK):
     cor, avg = TrainIteration(localK)
