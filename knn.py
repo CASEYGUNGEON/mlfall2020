@@ -8,6 +8,8 @@ import random as rdm
 
 # number of neighbors
 K = 5
+# amount to change K by per iteration
+KRate = 1
 # training sample size
 numTrainSamples = 2000
 
@@ -20,9 +22,6 @@ def distance(x1, x2):
     dist = math.sqrt(dist)
     return dist
 
-# key for sorting 2D arrays by second element (used in custom KNN)
-def sortBy2ndEle(a):
-    return a[1]
 
 # finds mode of passed ndarray
 # for KNN, this should be passed an ndarray of Y values
@@ -53,6 +52,60 @@ def getNNY(target, others, othersY, kn):
     for j in range(1,kn):
         neighborsY[j] = sorted[i][0]
     return findMode(neighborsY)
+
+
+# Train
+def TrainIteration(localK):
+    YTrainPred = np.zeros(len(YTrain))
+    for i in range(len(XTrain)):
+        print("calculating XTrain[" + str(i) + "]")
+        YTrainPred[i] = getNNY(XTrain[i],XTrain,YTrain,localK)
+    correct = 0
+    avgdif = 0.0
+    for i in range(len(YTrainPred)):
+        if YTrainPred[i] == YTrain[i]:
+            correct += 1
+        avgdif += abs(YTrain[i] - YTrainPred[i])
+    avgdif /= len(YTrain)
+    print("correct values: " + str(correct) + " out of " + str(len(YTrain)))
+    print("average error: " + str(avgdif))
+    print("K = " + str(localK))
+    input("Press Enter to continue...")
+    return correct,avgdif
+
+def Train(localK):
+    cor, avg = TrainIteration(localK)
+    localK += KRate
+    cor2, avg2 = TrainIteration(localK)
+    while cor2 < cor and avg2 < avg:
+        cor = cor2
+        avg = avg2
+        cor2, avg2 = Train(localK)
+
+        if cor2 > cor or avg2 > avg:
+            print("Done training!")
+            return localK
+        else:
+            localK += KRate
+    localK -= KRate * 2
+    cor = cor2
+    avg = avg2
+    cor2, avg2 = TrainIteration(localK)
+    while cor2 < cor and avg2 < avg:
+        cor = cor2
+        avg = avg2
+        cor2, avg2 = TrainIteration(localK)
+        if cor2 > cor or avg2 > avg:
+            print("Done training!")
+            return localK
+        else:
+            localK -= KRate
+    localK += KRate
+    print("Done training!")
+    return localK
+
+
+######## End of definitions
 
 
 # read data from csv
@@ -114,19 +167,5 @@ plt.ylabel('wine quality')
 plt.show()
 '''
 
-# Train
-
-YTrainPred = np.zeros(len(YTrain))
-for i in range(len(XTrain)):
-    print("calculating XTrain[" + str(i) + "]")
-    YTrainPred[i] = getNNY(XTrain[i],XTrain,YTrain,K)
-correct = 0
-avgdif = 0.0
-for i in range(len(YTrainPred)):
-    if YTrainPred[i] == YTrain[i]:
-        correct += 1
-    print("dif = " + str(abs(YTrain[i] - YTrainPred[i])))
-    avgdif += abs(YTrain[i] - YTrainPred[i])
-avgdif /= len(YTrain)
-print("correct values: " + str(correct) + " out of " + str(len(YTrain)))
-print("average error: " + str(avgdif))
+K = Train(K)
+print("final K: " + str(K))
