@@ -71,10 +71,10 @@ def Iteration(localK, XSet, YSet):
             correct += 1
         avgdif += abs(YSet[i] - YPred[i])
     avgdif /= len(YSet)
-    print("correct values: " + str(correct) + " out of " + str(len(YSet)))
-    print("average error: " + str(avgdif))
-    print("K = " + str(localK))
-    input("Press Enter to continue...")
+    # print("correct values: " + str(correct) + " out of " + str(len(YSet)))
+    # print("average error: " + str(avgdif))
+    # print("K = " + str(localK))
+    # input("Press Enter to continue...")
     return correct,avgdif
 
 def Predict(localK, KnownSet, YSet, UnknownSet):
@@ -204,3 +204,9 @@ plt.xlabel('iterations')
 plt.legend(loc='best')
 plt.show()
 '''
+
+c,a = Iteration(K,X,Y)
+print("number exactly correct: " + str(c) + " out of " + str(len(YTest)))
+print("average error: " + str(a))
+input("Press Enter to continue...")
+
