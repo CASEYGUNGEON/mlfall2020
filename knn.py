@@ -205,8 +205,7 @@ plt.legend(loc='best')
 plt.show()
 '''
 
-c,a = Iteration(K,X,Y)
-print("number exactly correct: " + str(c) + " out of " + str(len(YTest)))
+c, a = Iteration(K,X,Y)
+print("number exactly correct: " + str(c) + " out of " + str(len(Y)))
 print("average error: " + str(a))
 input("Press Enter to continue...")
-
