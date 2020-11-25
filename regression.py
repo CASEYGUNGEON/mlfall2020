@@ -24,14 +24,14 @@ dif = np.zeros(13)
 for i in range(0,12): # for each category
     minval[i] = arr[1:,i].min() # get min
     dif[i] = arr[1:,i].max() - minval[i] # get difference
-    for j in range(1,4898): # for each value in each category
+    for j in range(1,len(arr)-1): # for each value in each category
         arr[j,i] = (arr[j,i] - minval[i]) / dif[i] # normalizing data
 
 # print(arr) # for testing
 
 # Assign values for X and Y
-Xvals = np.ones((4898,12))
-Yvals = np.zeros(4898)
+Xvals = np.ones((len(arr)-1,12))
+Yvals = np.zeros(len(arr)-1)
 Xvals[:, 1:12] = arr[1:, 0:11] # Xvals[:, 0] is 1, fill in the rest with the X values from the dataset
 Yvals[:] = arr[1:, 11] # fill in Y values from dataset
 
@@ -52,10 +52,10 @@ Ytrain[:] = Yvals[0:TrainNum]
 # print(Xtrain) 
 # print(Ytrain)
 
-Xtest = np.zeros((4897-TrainNum+1,12))
-Ytest = np.zeros(4897-TrainNum+1)
-Xtest[:, :] = Xvals[TrainNum:4897+1, :]
-Ytest[:] = Yvals[TrainNum:4897+1]
+Xtest = np.zeros((len(arr)-TrainNum-1,12))
+Ytest = np.zeros(len(arr)-TrainNum-1)
+Xtest[:, :] = Xvals[TrainNum:len(arr), :]
+Ytest[:] = Yvals[TrainNum:len(arr)]
 
 # print(Xtest)
 # print(Ytest)
