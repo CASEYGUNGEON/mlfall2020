@@ -158,7 +158,7 @@ Y = np.zeros(len(arr))
 X = arr[:,0:10]
 Y = arr[:,11]
 
-
+'''
 # pick random sample for training
 trainPicks = rdm.sample(range(len(arr)),numTrainSamples)
 
@@ -184,7 +184,7 @@ for i in range(0,len(arr)):
             np.append(XTest[curTestIndex],val)
         YTest[curTestIndex] = Y[i]
         curTestIndex = curTestIndex + 1
-
+'''
 '''
 # display training data
 cols = data.columns.tolist()
