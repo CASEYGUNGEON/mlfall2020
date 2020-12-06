@@ -12,7 +12,7 @@ import math
 # Loading in data
 # The file location matters, may either need to change where it's currently located
 # NOTE: Must delete first row of the .csv files to skip parsing data
-data = pd.read_csv('~\\Documents\\GitHub\\mlfall2020\\winequality-white.csv', sep=';')
+data = pd.read_csv('.\\winequality-white.csv', sep = ';')
 arr = pd.DataFrame(data).to_numpy()
 # print(arr) # for testing
 
@@ -24,7 +24,7 @@ dif = np.zeros(13)
 for i in range(0,12): # for each category
     minval[i] = arr[1:,i].min() # get min
     dif[i] = arr[1:,i].max() - minval[i] # get difference
-    for j in range(1,len(arr)-1): # for each value in each category
+    for j in range(1,len(arr)): # for each value in each category
         arr[j,i] = (arr[j,i] - minval[i]) / dif[i] # normalizing data
 
 # print(arr) # for testing
@@ -32,8 +32,13 @@ for i in range(0,12): # for each category
 # Assign values for X and Y
 Xvals = np.ones((len(arr)-1,12))
 Yvals = np.zeros(len(arr)-1)
-Xvals[:, 1:12] = arr[1:, 0:11] # Xvals[:, 0] is 1, fill in the rest with the X values from the dataset
-Yvals[:] = arr[1:, 11] # fill in Y values from dataset
+
+n = len(arr)-1
+S = np.random.permutation(n) 
+
+for i in range(0,n): # randomizing data
+    Xvals[i,1:12] = arr[S[i]+1,0:11] # Xvals[:, 0] is 1, fill in the rest with the X values from the dataset
+    Yvals[i] = arr[S[i]+1,11] # fill in Y values from dataset
 
 #print(Xvals)
 #print(Yvals)
@@ -100,7 +105,7 @@ print("Done training")
 # Test how well the predictions and ground-truth values match
 print("Start testing")
 testNum = len(Ytest)
-print(testNum)
+# print(testNum)
 
 predictions = np.zeros(testNum)
 Error = np.zeros(testNum)
@@ -122,9 +127,9 @@ for i in range(0,testNum):
 STDErr = math.sqrt(STDErr / testNum)
 L1Error = L1Err/testNum
 L2Error = L2Err/testNum
-print(L1Error)
-print(L2Error)
-print(STDErr)
+print('L1 Error: {}'.format(L1Error))
+print('L2 Error: {}'.format(L2Error))
+print('Standard Deviation: {}'.format(STDErr))
 print("Done testing")
 
 ##########################################################################
