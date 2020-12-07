@@ -74,11 +74,14 @@ Ytest[:] = Yvals[TrainNum:len(arr)]
 numIterations = 200
 alpha = 0.1
 lambdas = [0,0.0005,0.001,0.0015,0.002,0.0025]
-L1Error = L2Error = np.zeros(len(lambdas))
+L1Error = np.zeros(len(lambdas))
+L2Error = np.zeros(len(lambdas))
+trainErr = np.zeros(len(lambdas))
 m = len(Ytrain) # number of data points for training
 arrCost = []; 
 XT = np.transpose(Xtrain) 
 theta = np.zeros(12)
+atmp = 0.0
 
 for k in range(0,len(lambdas)):
     print("Starting Training")
@@ -103,6 +106,9 @@ for k in range(0,len(lambdas)):
         atmp = sum1/2/m + lambdas[k] * thetaT.dot(theta)
         #print(atmp)
         arrCost.append(atmp)
+
+    trainErr[k] = atmp
+    print('Training Error: {}'.format(trainErr[k]))
     print("Done training")
 
 ##########################################################################
@@ -145,7 +151,7 @@ for k in range(0,len(lambdas)):
 #    plt.title('alpha = {} theta = {}'.format(alpha, theta))
 #    plt.show()
 
-plt.plot(range(0,len(lambdas)),L2Error);
+plt.plot(range(0,len(lambdas)),L2Error,'r--',range(0,len(lambdas)),trainErr,'b--');
 plt.xlabel('Lambda (x0.0005)')
 plt.ylabel('L2 Error')
 plt.title('Lambda vs. L2 Error')

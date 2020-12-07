@@ -49,8 +49,11 @@ for i in range(0,n): # randomizing data
 #########################################################################
 # Number of training samples
 # Can be changed
-TrainNum = [100,250,500,750,1000,1250,1500,1750,2000,2250,2500] 
-L1Error = L2Error = np.zeros(len(TrainNum)) 
+#TrainNum = [75,100,125,150,175,200,225,250,275,300,325,350,375,400,425,450,475,500,525,550,575,600,625,650,675,700,725,750,775,800,825,850,875,900,925,950,975,1000,1025] #for red dataset
+TrainNum = [125,250,375,500,625,750,875,1000,1125,1250,1375,1500,1625,1750,1875,2000,2125,2250,2375,2500] #for white dataset
+L1Error = np.zeros(len(TrainNum))
+L2Error = np.zeros(len(TrainNum))
+trainErr = np.zeros(len(TrainNum))
 
 for k in range(0,len(TrainNum)):
 
@@ -82,6 +85,7 @@ for k in range(0,len(TrainNum)):
     arrCost = []; 
     XT = np.transpose(Xtrain) 
     theta = np.zeros(12)
+    atmp = 0.0
 
     print("Starting Training")
     for iterations in range(0, numIterations): # Finding Theta
@@ -104,6 +108,9 @@ for k in range(0,len(TrainNum)):
         atmp = sum1/2/m + lambdas * thetaT.dot(theta)
         #print(atmp)
         arrCost.append(atmp)
+
+    trainErr[k] = atmp
+    print('Training Error: {}'.format(trainErr[k]))
     print("Done training")
 
 ##########################################################################
@@ -146,7 +153,10 @@ for k in range(0,len(TrainNum)):
 #    plt.title('alpha = {} theta = {}'.format(alpha, theta))
 #    plt.show()
 
-plt.plot(TrainNum,L2Error);
+print(L2Error)
+print(trainErr)
+
+plt.plot(TrainNum,L2Error,'r--',TrainNum,trainErr,'b--');
 plt.xlabel("Sample Size")
 plt.ylabel('L2 Error')
 plt.title('Sample Size vs. L2 Error')

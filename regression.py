@@ -12,7 +12,7 @@ import math
 # Loading in data
 # The file location matters, may either need to change where it's currently located
 # NOTE: Must delete first row of the .csv files to skip parsing data
-data = pd.read_csv('.\\winequality-white.csv', sep = ';')
+data = pd.read_csv('.\\winequality-red.csv', sep = ';')
 arr = pd.DataFrame(data).to_numpy()
 # print(arr) # for testing
 
@@ -46,7 +46,7 @@ for i in range(0,n): # randomizing data
 #########################################################################
 # Number of training samples
 # Can be changed
-TrainNum = 2000 
+TrainNum = 
 
 # Splitting data into testing and training 
 Xtrain = np.zeros((TrainNum,12))
@@ -69,7 +69,7 @@ Ytest[:] = Yvals[TrainNum:len(arr)]
 # Gradient Descent Method
 print("Starting Training")
 
-numIterations = 1000
+numIterations = 200
 alpha = 0.1
 
 m = len(Ytrain)
