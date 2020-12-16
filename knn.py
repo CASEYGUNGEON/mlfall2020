@@ -150,13 +150,13 @@ for i in range(0,12):
         # perform normalization on each factor in each datum
     for x in range(0,len(arr)):
         arr[x,i] = (arr[x,i] - minVal[i]) / maxDif[i]
-
+print(len(arr[0]))
 
 # separate X and Y values for easier use
 X = np.zeros((len(arr),11))
 Y = np.zeros(len(arr))
-X = arr[:,0:10]
-Y = arr[:,11]
+X = arr[:,0:-1]
+Y = arr[:,-1:]
 
 '''
 # pick random sample for training
@@ -185,16 +185,22 @@ for i in range(0,len(arr)):
         YTest[curTestIndex] = Y[i]
         curTestIndex = curTestIndex + 1
 '''
-'''
 # display training data
 cols = data.columns.tolist()
-fig, ax = plt.subplots(5,2)
-for i in range(len(XTrain[0])):
-    ax[i%5,math.floor(i/5)].scatter(XTrain[:,i],YTrain)
+fig, ax = plt.subplots(5,3)
+for i in range(10):
+    ax[i%5,math.floor(i/5)].scatter(X[:,i],Y,alpha=0.3,s=3)
     ax[i%5,math.floor(i/5)].set_title(cols[i])
+ax[2,2].scatter(X[:,10],Y,alpha=0.3,s=3)
+ax[2,2].set_title(cols[10])
+for j in range(5):
+    if j == 2:
+        continue
+    ax[j,2].set_visible(False)
 plt.ylabel('wine quality')
+plt.setp(ax[2,0], ylabel='wine quality')
+plt.draw()
 plt.show()
-'''
 '''
 K, CL, AL = Train(K)
 print("final K: " + str(K))
